@@ -17,7 +17,7 @@
 <li class=" has-child-item {!! (in_array('infograph',$menu)) ? 'open-item' : 'close-item' !!}">
     <a>
         <i class="fa fa-sitemap" aria-hidden="true"></i>
-        <span> Infographic  </span>
+        <span> Infographic List </span>
     </a>
     <ul class="nav child-nav level-1">
         <!--UI ELEMENTENTS-->
