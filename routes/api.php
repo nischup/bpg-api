@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Article;
 use App\InfoGraph;
 use App\Question;
+header('Access-Control-Allow-Origin: *');
 
 /*
 |--------------------------------------------------------------------------

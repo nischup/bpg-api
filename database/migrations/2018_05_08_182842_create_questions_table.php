@@ -21,7 +21,8 @@ class CreateQuestionsTable extends Migration
             $table->string('question', 256);
             $table->string('point');
             $table->unsignedInteger('user_id');
-            $table->string('status');
+            $table->string('image')->nullable();
+            $table->string('status')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

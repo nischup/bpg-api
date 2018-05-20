@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
 use App\Article;
 use DB;
@@ -12,11 +13,13 @@ use Auth;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $url;
+
+    public function __construct(UrlGenerator $url)
+    {
+        $this->url = $url;
+    }
+
     public function index()
     {
         $menu = ['article', 'articles'];
@@ -27,43 +30,37 @@ class ArticleController extends Controller
         return view('articles.index', compact('menu', 'article'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $menu = ['article', 'articles'];
         return view('articles.create', compact('menu'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //dd($request->all());
 
         request()->validate([
             'title' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required',
+            'image' => 'required',
+            'type' => 'required',
         ]);
+
+        $url = $this->url->to('/');
 
         $imageName = time().'.'.request()->image->getClientOriginalExtension();
 
         request()->image->move(public_path('uploads/articles'), $imageName);
-
-        //dd($imageName);
+        $imgpath =$url.'/uploads/articles/'.$imageName;
+        //dd($imgpath);
 
         $table = new Article();
         $table->title = $request->title;
         $table->description = $request->description;
-        $table->image = $imageName;
+        $table->image = $imgpath;
         $table->user_id = Auth::id();
+        $table->type = $request->type;
         $table->status = $request->status;
 
         $table->save();
@@ -71,23 +68,11 @@ class ArticleController extends Controller
                         ->with('success','New Article added');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $menu = ['article', 'articles'];
@@ -96,17 +81,8 @@ class ArticleController extends Controller
         return view('articles.edit',compact('menu', 'article'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-
-
         $table = Article::find($id);
         $table->title = $request->input('title');
         $table->description = $request->input('description');
@@ -119,12 +95,6 @@ class ArticleController extends Controller
         return redirect()->route('articles.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $article = Article::find($id);

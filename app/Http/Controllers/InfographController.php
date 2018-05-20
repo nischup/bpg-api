@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
 use App\Article;
 use App\InfoGraph;
@@ -13,11 +14,18 @@ use Auth;
 
 class InfographController extends Controller
 {
+    protected $url;
+
+    public function __construct(UrlGenerator $url)
+    {
+        $this->url = $url;
+    }
 
     public function index()
     {
         $menu = ['infograph', 'infograph'];
         $infograph = InfoGraph::with('user')->orderBy('id', 'desc')->get();
+        //dd($infograph);
         return view('infograph.index', compact('menu', 'infograph'));
     }
 
@@ -29,22 +37,25 @@ class InfographController extends Controller
 
     public function store(Request $request)
     {
-         request()->validate([
+        request()->validate([
             'title' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required',
+            'image' => 'required',
+            'type' => 'required',
         ]);
 
+        $url = $this->url->to('/');
         $imageName = time().'.'.request()->image->getClientOriginalExtension();
-
         request()->image->move(public_path('uploads/infograph'), $imageName);
-
-        //dd($imageName);
+        $imgpath =$url.'/uploads/infograph/'.$imageName;
+       // dd($imgpath);
 
         $table = new InfoGraph();
         $table->title = $request->title;
         $table->description = $request->description;
-        $table->image = $imageName;
+        $table->image = $imgpath;
         $table->user_id = Auth::id();
+        $table->type = $request->type;
         $table->status = $request->status;
 
         $table->save();

@@ -19,10 +19,11 @@ class CreateInfoGraphsTable extends Migration
             $table->collation = 'utf8_unicode_ci';
             $table->tinyIncrements('id');
             $table->string('title', 191);
-            $table->string('description', 2050);
-            $table->string('image');
-            $table->unsignedInteger('user_id');
-            $table->string('status');
+            $table->string('description', 2050)->nullable();
+            $table->string('image')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->integer('type');
+            $table->string('status')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

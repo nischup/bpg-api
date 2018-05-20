@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
 use App\Question;
 use App\QuestionOption;
@@ -13,11 +14,13 @@ use Auth;
 
 class QuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $url;
+
+    public function __construct(UrlGenerator $url)
+    {
+        $this->url = $url;
+    }
+
     public function index()
     {
         $menu = ['question', 'question'];
@@ -26,11 +29,6 @@ class QuestionController extends Controller
         return view('question.index', compact('menu', 'question'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $menu = ['question', 'question'];
@@ -38,12 +36,6 @@ class QuestionController extends Controller
         return view('question.create', compact('menu', 'question'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         request()->validate([
@@ -51,9 +43,16 @@ class QuestionController extends Controller
             'point' => 'required',
         ]);
 
+        $url = $this->url->to('/');
+        $imageName = time().'.'.request()->image->getClientOriginalExtension();
+        request()->image->move(public_path('uploads/question'), $imageName);
+        $imgpath =$url.'/uploads/question/'.$imageName;
+        //dd($imgpath);
+
         $table = new Question();
         $table->question = $request->question;
         $table->point = $request->point;
+        $table->image = $imgpath;
         $table->user_id = Auth::id();
         $table->status = $request->status;
 
@@ -87,51 +86,26 @@ class QuestionController extends Controller
                         ->with('success','Question Option Save');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        // $question = Question::find($id);
-        // $question->delete();
-        // Session::flash('success', 'question has been deleted');
-        // return redirect()->route('question.index');
+        $question = Question::find($id);
+        $question->delete();
+        Session::flash('success', 'question has been deleted');
+        return redirect()->route('question.index');
     }
 }

@@ -43,7 +43,7 @@
                             <th> Description </th>
                             <th> Img </th>
                             <th> Status </th>
-                            <th> User </th>
+                        {{--     <th> User </th> --}}
                            	<th> Action </th>
                           </tr>
                         </thead>
@@ -52,11 +52,11 @@
                             @foreach ($infograph as $data)
                         	<tr>
                                 <td> {{ $i }} </td>
-                                <td> {{ $data->title }} </td>
-                                <td> {{ $data->description }} </td>
-                            	<td> <img src="/uploads/infograph/{{ $data->image }}" alt="No Image" width="50" height="50"> </td>
+                                <td> {{ str_limit($data->title, 35) }} </td>
+                                <td>  {{ str_limit($data->description, 70) }} </td>
+                            	<td> <img src="{{ $data->image }}" alt="No Image" width="50" height="50"> </td>
                                 <td> {{ $data->status == "1" ? "Active" : "In-Active" }} </td>
-                                <td> {{ $data->user->name }} </td>
+                              {{--   <td> {{ $data->user->name }} </td> --}}
                                 <td> 
                                 <a class="btn btn-transparent" title="" data-original-title="Edit" href="{{ route('infograph.edit',$data->id) }}"><i class="fa fa-pencil"></i></a>
                                  {!! Form::open(['method' => 'DELETE','route' => ['infograph.destroy', $data->id],'style'=>'display:inline']) !!}

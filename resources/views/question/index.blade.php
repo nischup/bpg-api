@@ -41,6 +41,7 @@
                             <th> # </th>
                             <th> question </th>
                             <th> Point </th>
+                            <th> Image </th>
                             <th> Status </th>
                             <th> User </th>
                            	<th> Action </th>
@@ -53,10 +54,11 @@
                                 <td> {{ $i }} </td>
                                 <td> {{ $data->question }} </td>
                                 <td> {{ $data->point }} </td>
+                                <td> <img src="{{ $data->image }}" alt="no image" width="50" height="50">  </td>
                                 <td> {{ $data->status == "1" ? "Active" : "In-Active" }} </td>
                                 <td> {{ $data->user->name }} </td>
                                 <td> 
-                                <a class="btn btn-transparent" title="" data-original-title="Edit" href="{{ route('question.edit',$data->id) }}"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-transparent" disabled="" title="" data-original-title="Edit" href="{{ route('question.edit',$data->id) }}"><i class="fa fa-pencil"></i></a>
                                  {!! Form::open(['method' => 'DELETE','route' => ['question.destroy', $data->id],'style'=>'display:inline']) !!}
                                     <button class="btn btn-transparent" title="" data-original-title="Delete"><i class="fa fa-times"></i></button>
                                 {!! Form::close() !!}

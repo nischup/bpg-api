@@ -52,9 +52,9 @@
                             @foreach ($article as $data)
                         	<tr>
                                 <td> {{ $i }} </td>
-                                <td> {{ str_limit($data->title, 50) }} </td>
-                                <td> {{ str_limit($data->description, 100) }} </td>
-                            	<td> <img src="/uploads/articles/{{ $data->image }}" alt="No Image" width="50" height="50"> </td>
+                                <td> {{ str_limit($data->title, 35) }} </td>
+                                <td> {{ str_limit($data->description, 70) }} </td>
+                            	<td> <img src="{{ $data->image }}" alt="No Image" width="50" height="50"> </td>
                                 <td> {{ $data->status == "1" ? "Active" : "In-Active" }} </td>
                                 <td> {{ $data->user->name }} </td>
                                 <td> 

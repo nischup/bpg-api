@@ -1,3 +1,6 @@
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-imageupload.css') }}">
+@stop
 @extends('layouts.app')
 @section('breadcrumb')
 <!-- leftside content header -->
@@ -53,6 +56,22 @@
 					        @if ($errors->has('point'))
 					            <label id="point-error" class="error" for="point"> {{ $errors->first('point') }}</label>
 					        @endif
+					    </div>
+					</div>
+
+					<div class="form-group">
+					    <label for="catname" class="col-sm-2 control-label"> Question Image </label>
+					    <div class="col-sm-4">
+					            <div class="imageupload panel panel-default">
+					                <div class="file-tab panel-body">
+					                    <label class="btn btn-default btn-file">
+					                        <span>Browse</span>
+					                        <!-- The file is stored here. -->
+					                        <input type="file" name="image">
+					                    </label>
+					                    <button type="button" class="btn btn-default">Remove</button>
+					                </div>
+					            </div>
 					    </div>
 					</div>
 
@@ -161,5 +180,14 @@
         </div>
 	</div>
 </div>
+@stop
+
+@section('script')
+    <script src="{{ asset('js/bootstrap-imageupload.js') }}"></script>
+ <script>
+    var $imageupload = $('.imageupload');
+    $imageupload.imageupload();
+</script>
+
 @stop
 

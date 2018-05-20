@@ -6,20 +6,25 @@
 <div class="form-group">
     <label for="catname" class="col-sm-2 control-label"> Title <span class="required" aria-required="true">*</span> </label>
     <div class="col-sm-4">
-        <input type="text" class="form-control" name="title"  placeholder="Article Title">
-        <span class="alert-danger"> {{ $errors->has('title') ? 'required' : '' }} </span>
+        <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="Article Title">
+        @if ($errors->has('title'))
+            <label id="title-error" class="error" for="title"> {{ $errors->first('title') }}</label>
+        @endif
     </div>
 </div>
 
 <div class="form-group">
     <label for="catname" class="col-sm-2 control-label"> Description <span class="required" aria-required="true">*</span> </label>
     <div class="col-sm-4">
-        <textarea type="text" class="form-control" name="description" placeholder="Article Description"></textarea>
+        <textarea type="text" class="form-control" name="description" placeholder="Article Description"> {{ old('description') }} </textarea>
+        @if ($errors->has('description'))
+            <label id="description-error" class="error" for="description"> {{ $errors->first('description') }}</label>
+        @endif
     </div>
 </div>
 
 <div class="form-group">
-    <label for="catname" class="col-sm-2 control-label"> Image </label>
+    <label for="catname" class="col-sm-2 control-label"> Image <span class="required" aria-required="true">*</span> </label>
     <div class="col-sm-4">
             <div class="imageupload panel panel-default">
                 <div class="file-tab panel-body">
@@ -31,6 +36,24 @@
                     <button type="button" class="btn btn-default">Remove</button>
                 </div>
             </div>
+        @if ($errors->has('image'))
+            <label id="image-error" class="error" for="image"> {{ $errors->first('image') }}</label>
+        @endif
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="type" class="col-sm-2 control-label"> Type <span class="required" aria-required="true">*</span> </label>
+    <div class="col-sm-4">
+         <select name="type" id="select2-example-basic" class="form-control" style="width: 100%">
+                <option value=""> Select Type </option>
+                <option value="1"> সর্বশেষ </option>
+                <option value="2"> আলোচিত </option>
+                <option value="3"> অদেখা </option>
+        </select>
+        @if ($errors->has('type'))
+            <label id="type-error" class="error" for="type"> {{ $errors->first('type') }}</label>
+        @endif
     </div>
 </div>
 
