@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
 use App\Article;
+use App\User;
 use DB;
 use Session;
 use Auth;
@@ -34,6 +35,15 @@ class ArticleController extends Controller
     {
         $menu = ['article', 'articles'];
         return view('articles.create', compact('menu'));
+    }
+
+    public function userCreate()
+    {
+        return view('articles.user');
+    }
+
+    public function user(Request $request) {
+
     }
 
     public function store(Request $request)

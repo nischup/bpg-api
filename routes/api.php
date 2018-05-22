@@ -21,17 +21,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('article', function(){
-	$article = Article::with('user')->orderBy('id', 'desc')->get();
+Route::get('article/{id}', function($id){
+	$article = Article::orderBy('id', 'desc')->where('type', $id)->get();
+	// $article = Article::with('user')->orderBy('id', 'desc')->get();
 	return response($content = $article, $status = 200);
 });
 
-Route::get('infographic', function(){
-	$infographic = InfoGraph::with('user')->orderBy('id', 'desc')->get();
+Route::get('infographic/{id}', function($id){
+	$infographic = InfoGraph::orderBy('id', 'desc')->where('type', $id)->get();
 	return response($content = $infographic, $status = 200);
 });
 
 Route::get('question', function(){
-	$question = Question::with('option')->with('user')->orderBy('id', 'desc')->get();
+	$question = Question::with('option')->orderBy('id', 'desc')->get();
 	return response($content = $question, $status = 200);
 });

@@ -14,6 +14,12 @@
     </ul>
 </li>
 
+<li>
+    <li class="close-item">
+        <a href="{{ route('user.page') }}"><i class="fa fa-cubes" aria-hidden="true"></i><span> user </span></a>
+    </li>
+</li>
+
 <li class=" has-child-item {!! (in_array('infograph',$menu)) ? 'open-item' : 'close-item' !!}">
     <a>
         <i class="fa fa-sitemap" aria-hidden="true"></i>

@@ -44,8 +44,11 @@ class QuestionController extends Controller
         ]);
 
         $url = $this->url->to('/');
+
         $imageName = time().'.'.request()->image->getClientOriginalExtension();
+
         request()->image->move(public_path('uploads/question'), $imageName);
+        
         $imgpath =$url.'/uploads/question/'.$imageName;
         //dd($imgpath);
 
