@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Article;
 use App\InfoGraph;
 use App\Question;
+use App\User;
 header('Access-Control-Allow-Origin: *');
 
 /*
@@ -36,3 +37,5 @@ Route::get('question', function(){
 	$question = Question::with('option')->orderBy('id', 'desc')->get();
 	return response($content = $question, $status = 200);
 });
+
+Route::post('user-register', 'ArticleController@register')->name('user.register');

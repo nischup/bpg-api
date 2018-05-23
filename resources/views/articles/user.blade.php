@@ -13,7 +13,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-8 col-md-offset-git">
        <!--SUCCESS-->
         @if (Session::has('success'))           
         <div class="alert alert-success fade in">
@@ -34,9 +34,9 @@
 		</span>
 		 <div class="panel">
             <div class="panel-content">
-				<form action="{{ route('user.register') }}" method="post" class="form-horizontal form-stripe" enctype="multipart/form-data">
+				<form action="{{ route('user.register') }}" method="post" class="form-horizontal form-stripe">
 					{{ csrf_field() }}
-					 @include('articles._form')
+					 @include('articles.user_form')
                 </form>
             </div>
         </div>

@@ -5,8 +5,7 @@
             <img src="https://image.flaticon.com/icons/svg/783/783429.svg" alt="profile photo" >
         </div>
         <div class="user-info">
-            <span class="user-name">Jane Doe</span>
-            <span class="user-profile">Admin</span>
+            <span class="user-name">{{ Auth::user()->name }} </span>
         </div>
         <i class="fa fa-plus icon-open" aria-hidden="true"></i>
         <i class="fa fa-minus icon-close" aria-hidden="true"></i>

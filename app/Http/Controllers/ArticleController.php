@@ -39,11 +39,25 @@ class ArticleController extends Controller
 
     public function userCreate()
     {
-        return view('articles.user');
+        $menu = ['article', 'articles'];
+        return view('articles.user', compact('menu'));
     }
 
-    public function user(Request $request) {
+    public function register(Request $request) {
 
+        request()->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $table = new User();
+        $table->name = $request->name;
+        $table->email = $request->email;
+        $table->password = bcrypt($request->password);
+
+        $table->save();
+        return response()->json(['status' => 'success','message' => 'registration success']);
     }
 
     public function store(Request $request)
