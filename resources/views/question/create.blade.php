@@ -39,6 +39,22 @@
             <div class="panel-content">
 				<form action="{{ route('question.store') }}" method="post" class="form-horizontal form-stripe" enctype="multipart/form-data">
 					{{ csrf_field() }}
+
+					<div class="form-group">
+					    <label for="catname" class="col-sm-2 control-label"> Quiz Topic <span class="required" aria-required="true">*</span> </label>
+					    <div class="col-sm-4">
+					        <select name="quiz_topic_id" id="select2-example-basic" class="form-control" style="width: 100%">
+					         <option value=""> Select Topic </option>
+					         	@foreach($quiz as $data_quiz)
+					                <option value="{{ $data_quiz->id }}"> {{ $data_quiz->quiz_title }} </option>
+					            @endforeach
+					        </select>
+					        @if ($errors->has('quiz_topic_id'))
+					            <label id="quiz_topic_id-error" class="error" for="quiz_topic_id"> {{ $errors->first('quiz_topic_id') }}</label>
+					        @endif
+					    </div>
+					</div>
+
 					 <div class="form-group">
 					    <label for="catname" class="col-sm-2 control-label"> Question <span class="required" aria-required="true">*</span> </label>
 					    <div class="col-sm-4">

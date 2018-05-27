@@ -34,7 +34,7 @@ Route::get('infographic/{id}', function($id){
 });
 
 Route::get('question', function(){
-	$question = Question::with('option')->orderBy('id', 'desc')->get();
+	$question = Question::with('option')->with('quiz')->with('user')->orderBy('id', 'desc')->get();
 	return response($content = $question, $status = 200);
 });
 

@@ -33,6 +33,19 @@
     </ul>
 </li>
 
+<li class=" has-child-item {!! (in_array('quiz_topic',$menu)) ? 'open-item' : 'close-item' !!}">
+    <a>
+        <i class="fa fa-sitemap" aria-hidden="true"></i>
+        <span> Quiz Setup  </span>
+    </a>
+    <ul class="nav child-nav level-1">
+        <!--UI ELEMENTENTS-->
+        <li class="close-item">
+            <a href="{{ route('quiz.index') }}"><i class="fa fa-cubes" aria-hidden="true"></i><span> Quiz Topic </span></a>
+        </li>
+    </ul>
+</li>
+
 <li class=" has-child-item {!! (in_array('question',$menu)) ? 'open-item' : 'close-item' !!}">
     <a>
         <i class="fa fa-sitemap" aria-hidden="true"></i>

@@ -15,4 +15,9 @@ class Question extends Model
     {
     	return $this->hasMany('App\QuestionOption', 'question_id');
     }
+
+    public function quiz()
+    {
+    	return $this->belongsTo('App\QuizTopic', 'quiz_topic_id');
+    }
 }

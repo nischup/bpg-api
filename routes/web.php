@@ -26,6 +26,7 @@ Route::resource('articles', 'ArticleController');
 Route::get('userRegister', 'ArticleController@userCreate')->name('user.page');
 Route::post('user-register', 'ArticleController@register')->name('user.register');
 Route::resource('infograph', 'InfographController');
+Route::resource('quiz', 'QuizTopicController');
 Route::resource('question', 'QuestionController');
 Route::post('question-option', 'QuestionController@qoStore')->name('question.option.store');
 

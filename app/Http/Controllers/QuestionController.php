@@ -8,6 +8,7 @@ use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
 use App\Question;
 use App\QuestionOption;
+use App\QuizTopic;
 use DB;
 use Session;
 use Auth;
@@ -24,7 +25,7 @@ class QuestionController extends Controller
     public function index()
     {
         $menu = ['question', 'question'];
-        $question = Question::with('option')->with('user')->orderBy('id', 'desc')->get();
+        $question = Question::with('option')->with('quiz')->with('user')->orderBy('id', 'desc')->get();
         //dd($question);
         return view('question.index', compact('menu', 'question'));
     }
@@ -33,7 +34,9 @@ class QuestionController extends Controller
     {
         $menu = ['question', 'question'];
         $question = Question::orderBy('id', 'desc')->get();
-        return view('question.create', compact('menu', 'question'));
+        $quiz = QuizTopic::orderBy('id', 'desc')->get();
+        //dd($quiz);
+        return view('question.create', compact('menu', 'question', 'quiz'));
     }
 
     public function store(Request $request)
@@ -41,6 +44,7 @@ class QuestionController extends Controller
         request()->validate([
             'question' => 'required',
             'point' => 'required',
+            'quiz_topic_id' => 'required',
         ]);
 
         $url = $this->url->to('/');
@@ -53,6 +57,7 @@ class QuestionController extends Controller
         //dd($imgpath);
 
         $table = new Question();
+        $table->quiz_topic_id = $request->quiz_topic_id;
         $table->question = $request->question;
         $table->point = $request->point;
         $table->image = $imgpath;
