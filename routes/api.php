@@ -7,6 +7,8 @@ use App\Question;
 use App\QuizTopic;
 use App\User;
 header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header('Access-Control-Allow-Methods: GET, POST, PUT');
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +37,7 @@ Route::get('infographic/{id}', function($id){
 });
 
 Route::get('quiz', function(){
-	$quiz = QuizTopic::with('question')->with('option')->orderBy('id', 'desc')->get();
+	$quiz = QuizTopic::with('question')->orderBy('id', 'desc')->get();
 	return response($content = $quiz, $status = 200);
 });
 
