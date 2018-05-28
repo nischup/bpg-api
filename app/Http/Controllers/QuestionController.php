@@ -49,24 +49,43 @@ class QuestionController extends Controller
 
         $url = $this->url->to('/');
 
-        $imageName = time().'.'.request()->image->getClientOriginalExtension();
+        if ($request->image != null) {
+            $imageName = time().'.'.request()->image->getClientOriginalExtension();
 
-        request()->image->move(public_path('uploads/question'), $imageName);
-        
-        $imgpath =$url.'/uploads/question/'.$imageName;
-        //dd($imgpath);
+            request()->image->move(public_path('uploads/question'), $imageName);
+            
+            $imgpath =$url.'/uploads/question/'.$imageName;
+            //dd($imgpath);
 
-        $table = new Question();
-        $table->quiz_topic_id = $request->quiz_topic_id;
-        $table->question = $request->question;
-        $table->point = $request->point;
-        $table->image = $imgpath;
-        $table->user_id = Auth::id();
-        $table->status = $request->status;
+            $table = new Question();
+            $table->quiz_topic_id = $request->quiz_topic_id;
+            $table->question = $request->question;
+            $table->point = $request->point;
+            $table->image = $imgpath;
+            $table->user_id = Auth::id();
+            $table->status = $request->status;
 
-        $table->save();
-        return redirect()->route('question.create')
-                        ->with('success','New Question added');
+            $table->save();
+            return redirect()->route('question.create')
+                            ->with('success','New Question added');
+
+        }
+        else
+            {
+
+            $table = new Question();
+            $table->quiz_topic_id = $request->quiz_topic_id;
+            $table->question = $request->question;
+            $table->point = $request->point;
+            $table->image = $request->image;
+            $table->user_id = Auth::id();
+            $table->status = $request->status;
+
+            $table->save();
+            return redirect()->route('question.create')
+                            ->with('success','New Question added');
+            }
+
     }
 
     public function qoStore(Request $request)

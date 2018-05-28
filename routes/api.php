@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Article;
 use App\InfoGraph;
 use App\Question;
+use App\QuizTopic;
 use App\User;
 header('Access-Control-Allow-Origin: *');
 
@@ -33,9 +34,9 @@ Route::get('infographic/{id}', function($id){
 	return response($content = $infographic, $status = 200);
 });
 
-Route::get('question', function(){
-	$question = Question::with('option')->with('quiz')->with('user')->orderBy('id', 'desc')->get();
-	return response($content = $question, $status = 200);
+Route::get('quiz', function(){
+	$quiz = QuizTopic::with('question')->with('option')->orderBy('id', 'desc')->get();
+	return response($content = $quiz, $status = 200);
 });
 
 Route::post('user-register', 'ArticleController@register')->name('user.register');
