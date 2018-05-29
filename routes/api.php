@@ -5,9 +5,9 @@ use App\Article;
 use App\InfoGraph;
 use App\Question;
 use App\QuizTopic;
+use App\PlayedQuiz;
 use App\User;
 header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 header('Access-Control-Allow-Methods: GET, POST, PUT');
 
 /*
@@ -42,3 +42,10 @@ Route::get('quiz', function(){
 });
 
 Route::post('user-register', 'ArticleController@register')->name('user.register');
+
+Route::post('played-quiz', 'QuestionController@palyedQuiz')->name('played.quiz.store');
+
+Route::get('played-quiz-score', function(){
+	$pqs = PlayedQuiz::orderBy('id', 'desc')->get();
+	return response($content = $pqs, $status = 200);
+});

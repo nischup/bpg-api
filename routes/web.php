@@ -29,6 +29,7 @@ Route::resource('infograph', 'InfographController');
 Route::resource('quiz', 'QuizTopicController');
 Route::resource('question', 'QuestionController');
 Route::post('question-option', 'QuestionController@qoStore')->name('question.option.store');
+Route::post('played-quiz', 'QuestionController@palyedQuiz')->name('played.quiz.store');
 
 
 //start for template all page , it should be remove for production

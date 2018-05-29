@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Question;
 use App\QuestionOption;
 use App\QuizTopic;
+use App\PlayedQuiz;
 use DB;
 use Session;
 use Auth;
@@ -111,6 +112,20 @@ class QuestionController extends Controller
         $table->save();
         return redirect()->route('question.create')
                         ->with('success','Question Option Save');
+    }
+
+    public function palyedQuiz(Request $request) {
+        
+        $table = new PlayedQuiz();
+        $table->quiz_id = 4;
+        $table->user_id = Auth::id();
+        $table->right_ans = 190;
+        $table->wrong_ans = 75;
+        $table->total_question = 330;
+        $table->obtain_point = 210;
+
+        $table->save();
+        return response()->json(['status' => 'success','message' => 'Score Updated']);
     }
 
     public function show($id)
