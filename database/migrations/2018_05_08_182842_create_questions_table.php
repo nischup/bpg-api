@@ -20,6 +20,7 @@ class CreateQuestionsTable extends Migration
             $table->tinyIncrements('id');
             $table->unsignedInteger('quiz_topic_id');
             $table->string('question', 256);
+             $table->string('question_explanation')->nullable();
             $table->string('point');
             $table->unsignedInteger('user_id');
             $table->string('image')->nullable();

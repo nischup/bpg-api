@@ -61,6 +61,7 @@ class QuestionController extends Controller
             $table = new Question();
             $table->quiz_topic_id = $request->quiz_topic_id;
             $table->question = $request->question;
+            $table->question_explanation = $request->question_explanation;
             $table->point = $request->point;
             $table->image = $imgpath;
             $table->user_id = Auth::id();
@@ -77,6 +78,7 @@ class QuestionController extends Controller
             $table = new Question();
             $table->quiz_topic_id = $request->quiz_topic_id;
             $table->question = $request->question;
+            $table->question_explanation = $request->question_explanation;
             $table->point = $request->point;
             $table->image = $request->image;
             $table->user_id = Auth::id();
@@ -122,10 +124,10 @@ class QuestionController extends Controller
         $table->right_ans = 190;
         $table->wrong_ans = 75;
         $table->total_question = 330;
-        $table->obtain_point = 210;
+        $table->obtain_point = 310;
 
         $table->save();
-        return response()->json(['status' => 'success','message' => 'Score Updated']);
+        return response()->json(['status' => 'success','message' => 'Played Quiz Score Updated']);
     }
 
     public function show($id)

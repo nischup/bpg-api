@@ -66,6 +66,17 @@
 					</div>
 
 					<div class="form-group">
+					    <label for="catname" class="col-sm-2 control-label"> Question Explanation </label>
+					    <div class="col-sm-4">
+					        <input type="text" class="form-control" value="{{ old('question_explanation') }}" name="question_explanation"  placeholder="Question Explanation">
+					        @if ($errors->has('question_explanation'))
+					            <label id="question_explanation-error" class="error" for="question_explanation"> {{ $errors->first('question_explanation') }}</label>
+					        @endif
+					    </div>
+					</div>
+
+
+					<div class="form-group">
 					    <label for="catname" class="col-sm-2 control-label"> Point <span class="required" aria-required="true">*</span> </label>
 					    <div class="col-sm-4">
 					        <input type="number" min="0" class="form-control" value="{{ old('point') }}" name="point"  placeholder="Point">
