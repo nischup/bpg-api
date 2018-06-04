@@ -8,6 +8,7 @@ use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
 use App\Article;
 use App\User;
+use App\PlayedQuiz;
 use DB;
 use Session;
 use Auth;
@@ -25,10 +26,23 @@ class ArticleController extends Controller
     {
         $menu = ['article', 'articles'];
         $article = Article::with('user')->orderBy('id', 'desc')->get();
-        //$headers= [];
-        //return response($content = $article, $status = 200);
-        //dd($article);
         return view('articles.index', compact('menu', 'article'));
+    }
+
+    public function getscore($id) {
+        $total_obtain_point = PlayedQuiz::where('user_id', $id)->sum('obtain_point');
+        $right_ans = PlayedQuiz::where('user_id', $id)->sum('right_ans');
+        $wrong_ans = PlayedQuiz::where('user_id', $id)->sum('wrong_ans');
+        $played_quiz = PlayedQuiz::where('user_id', $id)->count('quiz_id');
+
+        $score = [
+            "played_quiz" => $played_quiz,
+            "total_obtain_point" => $total_obtain_point,
+            "wrong_ans" => $wrong_ans,
+            "right_ans" => $right_ans
+        ];
+
+        return response($content = $score, $status = 200);
     }
 
     public function create()
@@ -48,7 +62,7 @@ class ArticleController extends Controller
         request()->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
 
         $table = new User();
@@ -57,7 +71,8 @@ class ArticleController extends Controller
         $table->password = bcrypt($request->password);
 
         $table->save();
-        return response()->json(['status' => 'success','message' => 'registration success']);
+        return redirect()->route('user.page')
+                        ->with('success','New User Registered');
     }
 
     public function store(Request $request)
@@ -107,14 +122,29 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id)
     {
-        $table = Article::find($id);
-        $table->title = $request->input('title');
-        $table->description = $request->input('description');
-        $table->image = $request->input('image');
-        $table->user_id = Auth::id();
-        $table->status = $request->input('status');
 
-        $table->save();
+        $data = Article::find($id);
+
+        if ($request->hasfile('image')) {
+
+            $url = $this->url->to('/');
+            $iamge = $request->file('image');
+            $file_name = time().'.'.$image->getClientOriginalExtension();
+            $old_file = $data->image;
+            dd($old_file);
+            $request->image->move(public_path('uploads/articles'), $file_name);
+            $data->image = $file_name;
+            $image_path =$url.'/uploads/articles/'.$old_file;
+            unlink($image_path);
+
+        }
+
+        $data->title = $request->input('title');
+        $data->description = $request->input('description');
+        $data->user_id = Auth::id();
+        $data->status = $request->input('status');
+
+        $data->save();
         Session::flash('success', 'Article has been updated');
         return redirect()->route('articles.index');
     }

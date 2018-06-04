@@ -45,6 +45,35 @@ Route::group(['middleware' => ['api','cors']], function ()
 
 	Route::post('save-played-quiz-score', 'QuestionController@palyedQuiz')->name('played.quiz.store');
 
+	// quiz score
+
+	Route::get('percentage-of-success/{id}', 'ArticleController@getscore');
+
+	Route::get('highest-mark-by-quiz/{id}', function($id){
+		$max_mark = PlayedQuiz::where('quiz_id', $id)->max('obtain_point');
+		return response($content = $max_mark, $status = 200);
+	});
+
+	Route::get('highest-mark-by-login-user/{id}', function($id){
+		$max_mark = PlayedQuiz::where('user_id', $id)->max('obtain_point');
+		return response($content = $max_mark, $status = 200);
+	});
+
+	Route::get('right-ans-by-login-user/{id}', function($id){
+		$right_ans = PlayedQuiz::where('user_id', $id)->sum('right_ans');
+		return response($content = $right_ans, $status = 200);
+	});
+
+	Route::get('total-question-by-login-user/{id}', function($id){
+		$total_question = PlayedQuiz::where('user_id', $id)->sum('total_question');
+		return response($content = $total_question, $status = 200);
+	});
+
+	Route::get('wrong-ans-by-login-user/{id}', function($id){
+		$wrong_ans = PlayedQuiz::where('user_id', $id)->sum('wrong_ans');
+		return response($content = $wrong_ans, $status = 200);
+	});
+
 	Route::get('played-quiz-score', function(){
 	$pqs = DB::table('users')
             ->join('played_quizzes', 'users.id', '=', 'played_quizzes.user_id')

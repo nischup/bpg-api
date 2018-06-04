@@ -49,10 +49,19 @@
 						</div>
 					</div>
 
-					<div class="form-group">
-					    <label for="catname" class="col-sm-2 control-label"> Image </label>
+							<div class="form-group">
+					    <label class="col-sm-2 control-label"> Image </label>
 					    <div class="col-sm-4">
-							 {{Form::file('image',null,array('class' => 'form-control'))}}
+					    	
+				            <div class="panel panel-default">
+				                <div class="file-tab panel-body">
+				                	<img id="output" src="{{ $infograph->image }}" alt="No Image" width="150" height="150">
+				                </div>
+				            </div>
+				            <div class="image">
+				            	{{-- {{Form::file('image',null,array('class' => 'form-control'))}} --}}
+								<input type="file" name="image" onchange="return previewImage(event)" value="{{ $infograph->image }}"> 
+					    	</div>
 					    </div>
 					</div>
 
@@ -69,7 +78,7 @@
 
 					<div class="form-group">
 						<div class="col-md-6 col-md-offset-2">
-							<button type="submit" class="btn btn-primary" disabled="">
+							<button type="submit" class="btn btn-primary">
 								Update
 							</button>
 						</div>
@@ -79,4 +88,15 @@
 		</div>
 	</div>
 </div>
+@stop
+
+@section('script')
+
+ <script>
+ 	function previewImage(event) {
+ 		var output = document.getElementById('output');
+ 		output.src = URL.createObjectURL(event.target.files[0]);
+ 	};
+</script>
+
 @stop

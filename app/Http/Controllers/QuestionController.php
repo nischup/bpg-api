@@ -31,6 +31,10 @@ class QuestionController extends Controller
         return view('question.index', compact('menu', 'question'));
     }
 
+    public function highestMarkByQuiz() {
+        $max_mark = PlayedQuiz::where('quiz_id', 4)->max('obtain_point')->first();
+    }
+
     public function create()
     {
         $menu = ['question', 'question'];
@@ -70,11 +74,9 @@ class QuestionController extends Controller
             $table->save();
             return redirect()->route('question.create')
                             ->with('success','New Question added');
-
         }
         else
             {
-
             $table = new Question();
             $table->quiz_topic_id = $request->quiz_topic_id;
             $table->question = $request->question;

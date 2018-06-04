@@ -78,16 +78,28 @@ class InfographController extends Controller
 
     public function update(Request $request, $id)
     {
-        $table = InfoGraph::find($id);
-        $table->title = $request->input('title');
-        $table->description = $request->input('description');
-        $table->image = $request->input('image');
-        $table->user_id = Auth::id();
-        $table->status = $request->input('status');
+        $data = InfoGraph::find($id);
+        if ($request->hasfile('image')) {
+            $url = $this->url->to('/');
+            $iamge = $request->file('image');
+            $file_name = time().'.'.$image->getClientOriginalExtension();
+            $old_file = $data->image;
+            dd($old_file);
+            $request->image->move(public_path('uploads/infograph'), $file_name);
+            $data->image = $file_name;
+            $image_path =$url.'/uploads/articles/'.$old_file;
+            unlink($image_path);
+        }
 
-        $table->save();
+        $data->title = $request->input('title');
+        $data->description = $request->input('description');
+        $data->user_id = Auth::id();
+        $data->status = $request->input('status');
+
+        $data->save();
         Session::flash('success', 'infograph has been updated');
         return redirect()->route('infograph.index');
+
     }
 
     public function destroy($id)
