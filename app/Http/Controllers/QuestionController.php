@@ -119,14 +119,14 @@ class QuestionController extends Controller
     }
 
     public function palyedQuiz(Request $request) {
-        
+
         $table = new PlayedQuiz();
-        $table->quiz_id = 4;
-        $table->user_id = Auth::id();
-        $table->right_ans = 190;
-        $table->wrong_ans = 75;
-        $table->total_question = 330;
-        $table->obtain_point = 310;
+        $table->quiz_id = $request->quiz_id;
+        $table->user_id = $request->user_id;
+        $table->right_ans = $request->right_ans;
+        $table->wrong_ans = $request->wrong_ans;
+        $table->total_question = $request->total_question;
+        $table->obtain_point = $request->obtain_point;
 
         $table->save();
         return response()->json(['status' => 'success','message' => 'Played Quiz Score Updated']);
