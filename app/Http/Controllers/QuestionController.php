@@ -10,6 +10,7 @@ use App\Question;
 use App\QuestionOption;
 use App\QuizTopic;
 use App\PlayedQuiz;
+use App\User;
 use DB;
 use Session;
 use Auth;
@@ -140,6 +141,24 @@ class QuestionController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    public function updateName(Request $request)
+    {
+        $id = $request->id;
+        $data = User::find($id);
+        $user_old_name = $request->name;
+        if ($data->name != $user_old_name && $user_old_name != "") {
+             $data->name = $user_old_name;
+             $data->save();
+             
+             return response()->json([
+            'status' => "success",
+            'code' => "200",
+            'data' =>  User::find($id)
+        ], 200);
+        }
+        return response()->json(['status' => 'error','message' => 'We Could not Find the name']);
     }
 
     public function update(Request $request, $id)

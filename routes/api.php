@@ -80,14 +80,16 @@ Route::group(['middleware' => ['api','cors']], function ()
 	});
 
 	Route::get('played-quiz-score', function(){
-	$pqs = DB::table('users')
+	echo $pqs = DB::table('users')
             ->join('played_quizzes', 'users.id', '=', 'played_quizzes.user_id')
             ->select('users.id', 'users.name', 'played_quizzes.id', 'played_quizzes.quiz_id', 'played_quizzes.right_ans', 'played_quizzes.wrong_ans', 'played_quizzes.total_question', 'played_quizzes.obtain_point', 'played_quizzes.user_id')->orderBy('users.id', 'desc')
-            ->get();
-		return response($content = $pqs, $status = 200);
+            ->toSql();
+		//return response($content = $pqs, $status = 200);
 	});
 
 	Route::post('auth/register', 'Auth\ApiRegisterController@register');
+
+	Route::post('update-name', 'QuestionController@updateName');
 
 	Route::post('login', function (Request $request) {
     
