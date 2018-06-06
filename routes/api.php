@@ -89,7 +89,10 @@ Route::group(['middleware' => ['api','cors']], function ()
 
 	Route::post('auth/register', 'Auth\ApiRegisterController@register');
 
+	// update user info
 	Route::post('update-name', 'QuestionController@updateName');
+	Route::post('update-email', 'QuestionController@updateEmail');
+	Route::post('update-password', 'QuestionController@updatePassword');
 
 	Route::post('login', function (Request $request) {
     
