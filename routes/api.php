@@ -27,6 +27,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['api','cors']], function () 
 {
 
+	Route::post('quiz-visitor-count/{id}', function($id){
+		$post = QuizTopic::findorfail($id); // Find our post by ID.
+        $post->increment('count'); // Increment the value in the clicks column.
+        $post->update(); // Save our updated post.
+        return response($content = $post, $status = 200);
+	});
+
     Route::get('article/{id}', function($id){
 	$article = Article::orderBy('id', 'desc')->where('type', $id)->get();
 	// $article = Article::with('user')->orderBy('id', 'desc')->get();
@@ -80,11 +87,13 @@ Route::group(['middleware' => ['api','cors']], function ()
 	});
 
 	Route::get('played-quiz-score', function(){
-	echo $pqs = DB::table('users')
-            ->join('played_quizzes', 'users.id', '=', 'played_quizzes.user_id')
-            ->select('users.id', 'users.name', 'played_quizzes.id', 'played_quizzes.quiz_id', 'played_quizzes.right_ans', 'played_quizzes.wrong_ans', 'played_quizzes.total_question', 'played_quizzes.obtain_point', 'played_quizzes.user_id')->orderBy('users.id', 'desc')
-            ->toSql();
-		//return response($content = $pqs, $status = 200);
+        $pqs = DB::table('played_quizzes')
+            ->join('users', 'users.id', '=', 'played_quizzes.user_id')
+            ->select('name', DB::raw('SUM(played_quizzes.obtain_point) as obtain_point'))
+            ->groupBy('played_quizzes.user_id')
+            ->orderBy('obtain_point', 'desc')
+            ->get();
+		return response($content = $pqs, $status = 200);
 	});
 
 	Route::post('auth/register', 'Auth\ApiRegisterController@register');
@@ -108,7 +117,7 @@ Route::group(['middleware' => ['api','cors']], function ()
         ], 200);
     }
 	    return response()->json([
-	        'error' => 'Unauthenticated user',
+	        'error' => 'Wrong Login Credential',
 	        'code' => 401,
 	    ], 401);
 	});

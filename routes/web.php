@@ -22,6 +22,11 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+// password reset route
+
+// Route::post('password/email/');
+// Route::post('password/reset/');
+
 Route::resource('articles', 'ArticleController');
 Route::get('userRegister', 'ArticleController@userCreate')->name('user.page');
 Route::post('user-register', 'ArticleController@register')->name('user.register');

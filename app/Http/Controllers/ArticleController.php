@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Article;
 use App\User;
 use App\PlayedQuiz;
+use App\QuizTopic;
 use DB;
 use Session;
 use Auth;
@@ -27,6 +28,13 @@ class ArticleController extends Controller
         $menu = ['article', 'articles'];
         $article = Article::with('user')->orderBy('id', 'desc')->get();
         return view('articles.index', compact('menu', 'article'));
+    }
+
+    public function clickPost($id)
+    {
+        $post = QuizTopic::findorfail($id); // Find our post by ID.
+        $post->increment('count'); // Increment the value in the clicks column.
+        $post->update(); // Save our updated post.
     }
 
     public function getscore($id) {

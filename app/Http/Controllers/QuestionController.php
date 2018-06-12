@@ -147,9 +147,9 @@ class QuestionController extends Controller
     {
         $id = $request->id;
         $data = User::find($id);
-        $user_old_name = $request->name;
-        if ($data->name != $user_old_name && $user_old_name != "") {
-             $data->name = $user_old_name;
+        $new_name = $request->name;
+        if ($data->name != $new_name && $new_name != "") {
+             $data->name = $new_name;
              $data->save();
 
              return response()->json([
