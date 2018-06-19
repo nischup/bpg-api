@@ -92,8 +92,20 @@ Route::group(['middleware' => ['api','cors']], function ()
             ->select('name', DB::raw('SUM(played_quizzes.obtain_point) as obtain_point'))
             ->groupBy('played_quizzes.user_id')
             ->orderBy('obtain_point', 'desc')
+            ->take(10)
             ->get();
 		return response($content = $pqs, $status = 200);
+	});
+
+	Route::get('leaderboard-onlythis-quiz/{id}', function($id){
+        $leaderboardscore = DB::table('played_quizzes')
+            ->join('users', 'users.id', '=', 'played_quizzes.user_id')
+            ->select('name', DB::raw('SUM(played_quizzes.obtain_point) as obtain_point'))
+            ->groupBy('played_quizzes.user_id')
+            ->where('played_quizzes.quiz_id', $id)
+            ->orderBy('obtain_point', 'desc')
+            ->take(1);
+		return response($content = $leaderboardscore, $status = 200);
 	});
 
 	Route::post('auth/register', 'Auth\ApiRegisterController@register');
@@ -102,6 +114,7 @@ Route::group(['middleware' => ['api','cors']], function ()
 	Route::post('update-name', 'QuestionController@updateName');
 	Route::post('update-email', 'QuestionController@updateEmail');
 	Route::post('update-password', 'QuestionController@updatePassword');
+	Route::post('Save-Profile-Pic/{id}', 'ArticleController@saveProfilePic')->name('save-profilepic.page');
 
 	Route::post('login', function (Request $request) {
     

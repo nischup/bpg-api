@@ -59,14 +59,42 @@ class ArticleController extends Controller
         return view('articles.create', compact('menu'));
     }
 
+    public function profilePic()
+    {
+        $menu = ['article', 'articles'];
+        return view('articles.profilepic', compact('menu'));
+    }
+
+    public function saveProfilePic(Request $request) {
+
+        $url = $this->url->to('/');
+
+        $imageName = time().'.'.request()->profile_image->getClientOriginalExtension();
+
+        request()->profile_image->move(public_path('uploads/user'), $imageName);
+        $imgpath =$url.'/uploads/user/'.$imageName;
+        //dd($imgpath);
+
+         $table = DB::table('users')
+            ->where('id', $id)
+            ->update([
+                 'profile_image' => $imgpath
+              ]);
+            
+        return response()->json([
+            'status' => "success",
+            'code' => "200",
+        ], 200);
+    }
+
     public function userCreate()
     {
         $menu = ['article', 'articles'];
         return view('articles.user', compact('menu'));
     }
 
-    public function register(Request $request) {
-
+    public function register(Request $request) 
+    {
         request()->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
