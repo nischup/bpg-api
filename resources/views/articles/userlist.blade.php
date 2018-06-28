@@ -5,7 +5,7 @@
 	<div class="leftside-content-header">
 	    <ul class="breadcrumbs">
 	        <li><i class="fa fa-pie-chart" aria-hidden="true"></i><a href="{{ route('dashboard') }}">Dashboard</a></li>
-	        <li><a href="{{ route('articles.index') }}"> Articles Lists</a></li>
+	        <li><a href="{{ route('articles.index') }}"> User Lists </a></li>
 	    </ul>
 	</div>
 </div>
@@ -27,10 +27,10 @@
 <div class="row">
 	<div class="col-sm-12">
 		<h4 class="section-subtitle">
-			<b> Article Lists </b>
+			<b> User Lists </b>
 		</h4>
 		<span class="pull-right">
-			<a href="{{ route('articles.create')}}" class="btn btn-success btn-right-side"><i class="fa fa-plus"></i></a>
+			<a href="{{ route('user.page')}}" class="btn btn-success btn-right-side"><i class="fa fa-plus"></i></a>
 		</span>
 		 <div class="panel">
             <div class="panel-content">
@@ -39,27 +39,21 @@
                         <thead>
                           <tr>
                             <th> # </th>
-                            <th> Ttilte </th>
-                            <th> Description </th>
-                            <th> Img </th>
-                            <th> Status </th>
-                         {{--    <th> User </th> --}}
+                            <th> Name </th>
+                            <th> Email </th>
                            	<th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
                             @php $i=1; @endphp
-                            @foreach ($article as $data)
+                            @foreach ($user as $data)
                         	<tr>
                                 <td> {{ $i }} </td>
-                                <td> {{ str_limit($data->title, 35) }} </td>
-                                <td> {{ str_limit($data->description, 70) }} </td>
-                            	<td> <img src="{{ $data->image }}" alt="No Image" width="50" height="50"> </td>
-                                <td> {{ $data->status == "1" ? "Active" : "In-Active" }} </td>
-                              {{--   <td> {{ $data->user->name }} </td> --}}
+                                <td> {{ str_limit($data->name, 35) }} </td>
+                                <td> {{ str_limit($data->email, 70) }} </td>
                                 <td> 
-                                <a class="btn btn-transparent" title="" data-original-title="Edit" href="{{ route('articles.edit',$data->id) }}"><i class="fa fa-pencil"></i></a>
-                                 {!! Form::open(['method' => 'DELETE','route' => ['articles.destroy', $data->id],'style'=>'display:inline']) !!}
+                                <a class="btn btn-transparent" title="" data-original-title="Edit" href=""><i class="fa fa-pencil"></i></a>
+                                 {!! Form::open(['method' => 'DELETE','route' => ['user.destroy', $data->id],'style'=>'display:inline']) !!}
                                     <button class="btn btn-transparent" title="" data-original-title="Delete"><i class="fa fa-times"></i></button>
                                 {!! Form::close() !!}
                                 </td>

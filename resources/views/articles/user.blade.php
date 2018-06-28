@@ -30,7 +30,7 @@
 			<b>Add User </b>
 		</h4>
 		<span class="pull-right">
-			<a href="{{ route('user.page')}}" class="btn btn-success btn-right-side"><i class="fa fa-list"></i></a>
+			<a href="{{ route('user.list')}}" class="btn btn-success btn-right-side"><i class="fa fa-list"></i></a>
 		</span>
 		 <div class="panel">
             <div class="panel-content">

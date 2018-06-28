@@ -30,7 +30,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('articles', 'ArticleController');
 Route::get('Upload-Profile-Pic', 'ArticleController@profilepic')->name('add-profilepic.page');
 Route::post('Save-Profile-Pic/{id}', 'ArticleController@saveProfilePic')->name('save-profilepic.page');
+
 Route::get('userRegister', 'ArticleController@userCreate')->name('user.page');
+Route::get('user-list', 'ArticleController@userList')->name('user.list');
+Route::delete('user/{id}', 'ArticleController@userdelete')->name('user.destroy');
+
 Route::post('user-register', 'ArticleController@register')->name('user.register');
 Route::resource('infograph', 'InfographController');
 Route::resource('quiz', 'QuizTopicController');

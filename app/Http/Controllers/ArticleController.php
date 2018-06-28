@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Routing\UrlGenerator;
 use App\Http\Requests;
+use App\QuizTopic;
+use App\InfoGraph;
 use App\Article;
 use App\User;
 use App\PlayedQuiz;
-use App\QuizTopic;
 use DB;
 use Session;
 use Auth;
@@ -27,30 +28,10 @@ class ArticleController extends Controller
     {
         $menu = ['article', 'articles'];
         $article = Article::with('user')->orderBy('id', 'desc')->get();
+        //$headers= [];
+        //return response($content = $article, $status = 200);
+        //dd($article);
         return view('articles.index', compact('menu', 'article'));
-    }
-
-    public function clickPost($id)
-    {
-        $post = QuizTopic::findorfail($id); // Find our post by ID.
-        $post->increment('count'); // Increment the value in the clicks column.
-        $post->update(); // Save our updated post.
-    }
-
-    public function getscore($id) {
-        $total_obtain_point = PlayedQuiz::where('user_id', $id)->sum('obtain_point');
-        $right_ans = PlayedQuiz::where('user_id', $id)->sum('right_ans');
-        $wrong_ans = PlayedQuiz::where('user_id', $id)->sum('wrong_ans');
-        $played_quiz = PlayedQuiz::where('user_id', $id)->count('quiz_id');
-
-        $score = [
-            "played_quiz" => $played_quiz,
-            "total_obtain_point" => $total_obtain_point,
-            "wrong_ans" => $wrong_ans,
-            "right_ans" => $right_ans
-        ];
-
-        return response($content = $score, $status = 200);
     }
 
     public function create()
@@ -58,7 +39,8 @@ class ArticleController extends Controller
         $menu = ['article', 'articles'];
         return view('articles.create', compact('menu'));
     }
-
+    
+    
     public function profilePic()
     {
         $menu = ['article', 'articles'];
@@ -67,24 +49,42 @@ class ArticleController extends Controller
 
     public function saveProfilePic(Request $request) {
 
-        $url = $this->url->to('/');
-
-        $imageName = time().'.'.request()->profile_image->getClientOriginalExtension();
-
-        request()->profile_image->move(public_path('uploads/user'), $imageName);
-        $imgpath =$url.'/uploads/user/'.$imageName;
-        //dd($imgpath);
-
-         $table = DB::table('users')
-            ->where('id', $id)
-            ->update([
-                 'profile_image' => $imgpath
-              ]);
-            
-        return response()->json([
+  
+        
+        $id = $request->id;
+        $data = User::find($id);
+        $profile_image = $request->profile_image;
+        
+        if ($data->profile_image != $profile_image &&  $profile_image != "") {
+             $data->profile_image = $profile_image;
+             $data->save();
+             
+             return response()->json([
             'status' => "success",
             'code' => "200",
+            'data' =>  User::find($id)
         ], 200);
+        }
+      
+
+    }
+    
+    public function getscore($id) {
+        $total_obtain_point = PlayedQuiz::where('user_id', $id)->sum('obtain_point');
+        $right_ans = PlayedQuiz::where('user_id', $id)->sum('right_ans');
+        $wrong_ans = PlayedQuiz::where('user_id', $id)->sum('wrong_ans');
+        $total_question = PlayedQuiz::where('user_id', $id)->sum('total_question');
+        $played_quiz = PlayedQuiz::where('user_id', $id)->count('quiz_id');
+
+        $score = [
+            "played_quiz" => $played_quiz,
+            "total_obtain_point" => $total_obtain_point,
+            "total_question" => $total_question,
+            "wrong_ans" => $wrong_ans,
+            "right_ans" => $right_ans
+        ];
+
+        return response($content = $score, $status = 200);
     }
 
     public function userCreate()
@@ -93,8 +93,23 @@ class ArticleController extends Controller
         return view('articles.user', compact('menu'));
     }
 
-    public function register(Request $request) 
+    public function userList()
     {
+        $menu = ['article', 'articles'];
+        $user = User::all();
+        return view('articles.userlist', compact('user','menu'));
+    }
+
+    public function userdelete($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        Session::flash('success', 'user has been deleted');
+        return redirect()->route('user.list');
+    }
+
+    public function register(Request $request) {
+
         request()->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -107,7 +122,7 @@ class ArticleController extends Controller
         $table->password = bcrypt($request->password);
 
         $table->save();
-        return redirect()->route('user.page')
+         return redirect()->route('user.page')
                         ->with('success','New User Registered');
     }
 
@@ -127,7 +142,7 @@ class ArticleController extends Controller
         $imageName = time().'.'.request()->image->getClientOriginalExtension();
 
         request()->image->move(public_path('uploads/articles'), $imageName);
-        $imgpath =$url.'/uploads/articles/'.$imageName;
+        $imgpath =$url.'/public/uploads/articles/'.$imageName;
         //dd($imgpath);
 
         $table = new Article();
@@ -158,8 +173,7 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id)
     {
-
-        $data = Article::find($id);
+      $data = Article::find($id);
 
         if ($request->hasfile('image')) {
 
@@ -191,5 +205,45 @@ class ArticleController extends Controller
         $article->delete();
         Session::flash('success', 'Article has been deleted');
         return redirect()->route('articles.index');
+    }
+    
+    public function searchFilter($title){
+        $url = $this->url->to('/');
+        $filter = $title;
+        
+        $first = DB::table('articles')
+            ->select('id','title', 'description', 'image', 'type')
+            ->where('title', 'like', $filter.'%');
+
+        $second = DB::table('info_graphs')
+            ->select( 'id','title', 'description', 'image', 'type')
+            ->where('title', 'like', $filter.'%')
+             ->union($first)
+            ->get(); 
+        
+        // $third = DB::table('quiz_topics')
+        //     ->select('id', DB::raw("quiz_title  AS title"))
+        //     ->where('quiz_title', 'like', $filter.'%')
+        //     ->union($first)
+        //     ->union($second)
+        //     ->get();    
+            
+         return response()->json([
+            'status' => "success",
+            'code' => "200",
+            'data' => $second,
+        ], 200);   
+    }
+    
+    public function searchView($table, $id){
+        $data = DB::table($table)
+            ->where('id', '=', $id)
+            ->first();
+            
+        return response()->json([
+            'status' => "success",
+            'code' => "200",
+            'data' => $data,
+        ], 200);      
     }
 }

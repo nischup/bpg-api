@@ -15,7 +15,7 @@
                 	@include('layouts.sidebar_menu')
 
                     <!-- This Menu will be remove in production server-->
-                   {{--  @include('common.template_menu') --}}
+                    @include('common.template_menu')
 
                 </ul>
             </nav>

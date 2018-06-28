@@ -59,4 +59,12 @@
     </ul>
 </li>
 
+<li>
+ <a href="http://localhost/quizard_admin/db_backup/?type=download"><i class="fa fa-download"></i> Database Dump <span class="fa fa-chevron-top"></span></a>
+</li>
+
+{{-- <li>
+ <a href="{{ route('pages/{name}') }}"><i class="fa fa-download"></i> Pages <span class="fa fa-chevron-top"></span></a>
+</li> --}}
+
 
