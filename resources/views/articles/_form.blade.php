@@ -1,7 +1,14 @@
 
  @section('css')
     <link rel="stylesheet" href="{{ asset('css/bootstrap-imageupload.css') }}">
-@stop
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+    <style>
+        .note-editing-area{
+            height: 300px;
+        }
+    </style>
+ @stop
 
 <div class="form-group">
     <label for="catname" class="col-sm-2 control-label"> Title <span class="required" aria-required="true">*</span> </label>
@@ -16,7 +23,7 @@
 <div class="form-group">
     <label for="catname" class="col-sm-2 control-label"> Description <span class="required" aria-required="true">*</span> </label>
     <div class="col-sm-4">
-        <textarea type="text" class="form-control" name="description" placeholder="Article Description"> {{ old('description') }} </textarea>
+        <textarea type="text" class="form-control summernote"  rows="20" name="description" placeholder="Article Description"> {{ old('description') }} </textarea>
         @if ($errors->has('description'))
             <label id="description-error" class="error" for="description"> {{ $errors->first('description') }}</label>
         @endif
@@ -77,13 +84,22 @@
 </div>
 
 @section('script')
-     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+
+    {{--<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="crossorigin="anonymous"></script>--}}
     <script src="{{ asset('js/bootstrap-imageupload.js') }}"></script>
 
  <script>
     var $imageupload = $('.imageupload');
     $imageupload.imageupload();
 </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote();
+        });
+    </script>
 
 @stop
 
