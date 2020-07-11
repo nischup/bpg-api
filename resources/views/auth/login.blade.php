@@ -4,7 +4,7 @@
         <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
         <!--LOGO-->
         <div class="logo">
-            <h2 class="text-center"> <img src="img/Quizards-RGB.png" alt=""> </h2>
+            <h2 class="text-center"> <img src="img/project logo.png" alt=""> </h2>
         </div>
         <div class="box">
             <!--SIGN IN FORM-->

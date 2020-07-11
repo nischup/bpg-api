@@ -2,7 +2,7 @@
 <div class="leftside-header">
     <div class="text-center">
         <a style="color: #fff;padding-left: 30px; font-weight: bold;font-size: 22px;" href="{{ route('dashboard') }}">
-            <img src="img/Quizards-RGB.png" alt="" width="100" height="50">
+            <img src="img/logo-icon.png" alt="" width="100" height="50">
         </a>
     </div>
     <div id="menu-toggle" class="visible-xs toggle-left-sidebar" data-toggle-class="left-sidebar-open" data-target="html">
